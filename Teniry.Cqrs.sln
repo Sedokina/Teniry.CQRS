@@ -2,11 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.Cqrs", "src\Teniry.Cqrs\Teniry.Cqrs.csproj", "{3CCA98C7-A5EF-48D0-855C-E0282D4E6FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.CqrsTests", "Teniry.CqrsTests\Teniry.CqrsTests.csproj", "{0571C9C3-84E7-4A65-B1F4-864623302E78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.CqrsTests", "tests\Teniry.CqrsTests\Teniry.CqrsTests.csproj", "{0571C9C3-84E7-4A65-B1F4-864623302E78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.Cqrs.Extended", "src\Teniry.Cqrs.Extended\Teniry.Cqrs.Extended.csproj", "{4FB3695B-E70B-46A5-9B28-89A18007F36D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49675EE3-6238-4537-80EE-EA2DA2ACEA13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3BA220DB-56D3-4033-8737-A72CAE6A4980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3CCA98C7-A5EF-48D0-855C-E0282D4E6FED} = {49675EE3-6238-4537-80EE-EA2DA2ACEA13}
 		{4FB3695B-E70B-46A5-9B28-89A18007F36D} = {49675EE3-6238-4537-80EE-EA2DA2ACEA13}
+		{0571C9C3-84E7-4A65-B1F4-864623302E78} = {3BA220DB-56D3-4033-8737-A72CAE6A4980}
 	EndGlobalSection
 EndGlobal
