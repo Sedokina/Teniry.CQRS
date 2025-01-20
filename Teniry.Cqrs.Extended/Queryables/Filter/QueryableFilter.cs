@@ -4,19 +4,19 @@ using Teniry.Cqrs.Extended.Queryables.Sort;
 namespace Teniry.Cqrs.Extended.Queryables.Filter;
 
 public abstract class QueryableFilter<TEntity> {
-    public string[]? Sorts { get; set; }
+    public string[]? Sort { get; set; }
 
     public IQueryable<TEntity> ApplyFilter(IQueryable<TEntity> query) {
         return Filter(query);
     }
 
     public IQueryable<TEntity> ApplySort(IQueryable<TEntity> query) {
-        if (Sorts is null || !Sorts.Any()) return DefaultSort(query);
+        if (Sort is null || !Sort.Any()) return DefaultSort(query);
 
-        var availableSorts = Sort();
+        var availableSorts = DefineSort();
         IOrderedQueryable<TEntity> ordered = null!;
 
-        foreach (var sortKey in Sorts) {
+        foreach (var sortKey in Sort) {
             if (!SortKey.TryParse(sortKey, out var orderProperty)) continue;
 
             if (!availableSorts.TryGetValue(orderProperty.Property, out var orderByFunc)) continue;
@@ -35,7 +35,7 @@ public abstract class QueryableFilter<TEntity> {
         return ordered ?? query;
     }
 
-    public abstract Dictionary<string, Expression<Func<TEntity, object>>> Sort();
+    public abstract Dictionary<string, Expression<Func<TEntity, object>>> DefineSort();
 
     protected virtual IQueryable<TEntity> DefaultSort(IQueryable<TEntity> query) {
         return query;
