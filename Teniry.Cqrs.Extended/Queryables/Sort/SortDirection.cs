@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.Queryables.Sort;
+namespace Teniry.Cqrs.Extended.Queryables.Sort;
 
 public enum SortDirection {
     Asc,

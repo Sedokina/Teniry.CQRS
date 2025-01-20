@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using Teniry.Cqrs.Queryables.Sort;
+using Teniry.Cqrs.Extended.Queryables.Sort;
 
-namespace Teniry.Cqrs.Queryables.Filter;
+namespace Teniry.Cqrs.Extended.Queryables.Filter;
 
 public abstract class QueryableFilter<TEntity> {
     public string[]? Sorts { get; set; }

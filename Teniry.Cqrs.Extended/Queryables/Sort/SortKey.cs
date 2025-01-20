@@ -1,4 +1,4 @@
-﻿namespace Teniry.Cqrs.Queryables.Sort;
+﻿namespace Teniry.Cqrs.Extended.Queryables.Sort;
 
 public struct SortKey {
     public string Property { get; set; }

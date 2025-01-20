@@ -1,6 +1,6 @@
 using X.PagedList;
 
-namespace Teniry.Cqrs.Queryables.Page;
+namespace Teniry.Cqrs.Extended.Queryables.Page;
 
 public static class PageInfoExtensions {
     public static PageInfo GetPage<T>(this IPagedList<T> pagedList) {

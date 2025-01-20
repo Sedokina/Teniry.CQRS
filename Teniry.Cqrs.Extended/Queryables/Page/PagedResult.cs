@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.Queryables.Page;
+namespace Teniry.Cqrs.Extended.Queryables.Page;
 
 public class PagedResult<T> {
     public List<T> Items { get; set; }

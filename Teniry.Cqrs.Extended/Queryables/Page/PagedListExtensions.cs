@@ -1,6 +1,6 @@
 using X.PagedList;
 
-namespace Teniry.Cqrs.Queryables.Page;
+namespace Teniry.Cqrs.Extended.Queryables.Page;
 
 public static class PagedListExtensions {
     public static async Task<IPagedList<T>> ToPagedListAsync<T>(

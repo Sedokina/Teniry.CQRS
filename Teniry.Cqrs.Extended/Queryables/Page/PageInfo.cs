@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.Queryables.Page;
+namespace Teniry.Cqrs.Extended.Queryables.Page;
 
 public class PageInfo {
     public int CurrentPageIndex { get; set; }

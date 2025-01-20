@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.Cqrs", "Teniry.Cqrs\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.CqrsTests", "Teniry.CqrsTests\Teniry.CqrsTests.csproj", "{0571C9C3-84E7-4A65-B1F4-864623302E78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teniry.Cqrs.Extended", "Teniry.Cqrs.Extended\Teniry.Cqrs.Extended.csproj", "{4FB3695B-E70B-46A5-9B28-89A18007F36D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0571C9C3-84E7-4A65-B1F4-864623302E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0571C9C3-84E7-4A65-B1F4-864623302E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0571C9C3-84E7-4A65-B1F4-864623302E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB3695B-E70B-46A5-9B28-89A18007F36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB3695B-E70B-46A5-9B28-89A18007F36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB3695B-E70B-46A5-9B28-89A18007F36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB3695B-E70B-46A5-9B28-89A18007F36D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

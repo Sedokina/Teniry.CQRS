@@ -1,6 +1,6 @@
-using Teniry.Cqrs.Types.PatchOperationType.Exceptions;
+using Teniry.Cqrs.Extended.Types.PatchOperationType.Exceptions;
 
-namespace Teniry.Cqrs.Types.PatchOperationType;
+namespace Teniry.Cqrs.Extended.Types.PatchOperationType;
 
 public class PatchOp<T> {
     public T? Value { get; set; }

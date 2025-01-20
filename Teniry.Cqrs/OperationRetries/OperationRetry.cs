@@ -67,6 +67,6 @@ public static class OperationRetry {
         } while (attempt <= maxAttempts);
 
         // This is an unreachable exception
-        throw new MaxRetryAttemptsLimitException();
+        throw new MaxRetryAttemptsReachedException(maxAttempts);
     }
 }

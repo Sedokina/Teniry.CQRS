@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Localization;
-using Teniry.Cqrs.Exceptions;
+using Teniry.Cqrs.Extended.Exceptions;
 
-namespace Teniry.Cqrs.Types.PatchOperationType.Exceptions;
+namespace Teniry.Cqrs.Extended.Types.PatchOperationType.Exceptions;
 
 public class PatchOperationNotAllowedWithoutValueException : ExceptionBase {
     public PatchOpType OpType { get; }

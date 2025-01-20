@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Localization;
 
-namespace Teniry.Cqrs.Exceptions;
+namespace Teniry.Cqrs.Extended.Exceptions;
 
 /// <summary>
 ///     This is the base class for all the exceptions in the application

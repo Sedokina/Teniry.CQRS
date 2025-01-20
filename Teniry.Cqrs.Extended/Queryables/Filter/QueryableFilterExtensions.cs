@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.Queryables.Filter;
+namespace Teniry.Cqrs.Extended.Queryables.Filter;
 
 public static class QueryableFilterExtensions {
     public static IQueryable<TSource> Filter<TSource>(
