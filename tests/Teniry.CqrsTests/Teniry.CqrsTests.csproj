@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Teniry.Cqrs\Teniry.Cqrs.csproj"/>
+        <ProjectReference Include="..\..\src\Teniry.Cqrs\Teniry.Cqrs.csproj"/>
     </ItemGroup>
 
 </Project>
