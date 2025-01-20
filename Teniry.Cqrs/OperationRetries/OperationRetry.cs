@@ -8,11 +8,11 @@ public static class OperationRetry {
     /// <param name="retriableOperation">Max number of attempts to run the action if action fails and cleanup method</param>
     /// <exception cref="Exception">When no attempts left, throws exception occured at the last attempt</exception>
     public static async Task RetryOnFailAsync(
-        Func<Task>          actionToRetry,
+        Func<Task> actionToRetry,
         IRetriableOperation retriableOperation
     ) {
         var maxAttempts = retriableOperation.GetMaxRetryAttempts();
-        var attempt     = 0;
+        var attempt = 0;
 
         do {
             attempt++;
@@ -21,8 +21,7 @@ public static class OperationRetry {
                 await actionToRetry().ConfigureAwait(false);
 
                 return;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 if (!retriableOperation.RetryOnException(ex)) {
                     throw;
                 }
@@ -43,19 +42,18 @@ public static class OperationRetry {
     /// <param name="retriableOperation">Max number of attempts to run the action if action fails and cleanup method</param>
     /// <exception cref="Exception">When no attempts left, throws exception occured at the last attempt</exception>
     public static async Task<T> RetryOnFailAsync<T>(
-        Func<Task<T>>       actionToRetry,
+        Func<Task<T>> actionToRetry,
         IRetriableOperation retriableOperation
     ) {
         var maxAttempts = retriableOperation.GetMaxRetryAttempts();
-        var attempt     = 0;
+        var attempt = 0;
 
         do {
             attempt++;
 
             try {
                 return await actionToRetry().ConfigureAwait(false);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 if (!retriableOperation.RetryOnException(ex)) {
                     throw;
                 }

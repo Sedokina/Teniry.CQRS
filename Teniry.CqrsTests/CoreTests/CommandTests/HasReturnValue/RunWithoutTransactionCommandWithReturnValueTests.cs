@@ -9,7 +9,7 @@ public class RunWithoutTransactionCommandWithReturnValueTests {
     private readonly ServiceCollection _serviceCollection;
 
     public RunWithoutTransactionCommandWithReturnValueTests() {
-        _serviceCollection = new ServiceCollection();
+        _serviceCollection = new();
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class RunWithoutTransactionCommandWithReturnValueTests {
 
         // Act
         var result = await dispatcher
-            .DispatchAsync<UpdateTestDataCommand, string>(new UpdateTestDataCommand(Guid.Empty, string.Empty), new());
+            .DispatchAsync<UpdateTestDataCommand, string>(new(Guid.Empty, string.Empty), new());
 
         // Assert
         result.Should().Be("Handler called");
@@ -35,15 +35,15 @@ public class RunWithoutTransactionCommandWithReturnValueTests {
 
         // Act
         var act = async () => await dispatcher
-            .DispatchAsync<UpdateTestDataCommand, string>(new UpdateTestDataCommand(Guid.Empty, string.Empty), new());
+            .DispatchAsync<UpdateTestDataCommand, string>(new(Guid.Empty, string.Empty), new());
 
         // Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
 
     private class UpdateTestDataCommand(Guid id, string text) {
-        public Guid   Id   { get; set; } = id;
-        public string Text { get; set; } = text;
+        public Guid Id { get; } = id;
+        public string Text { get; } = text;
     }
 
     private class UpdateTestDataValidator : AbstractValidator<UpdateTestDataCommand> {
@@ -56,7 +56,7 @@ public class RunWithoutTransactionCommandWithReturnValueTests {
     private class UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand, string> {
         public Task<string> HandleAsync(
             UpdateTestDataCommand command,
-            CancellationToken     cancellation
+            CancellationToken cancellation
         ) {
             return Task.FromResult("Handler called");
         }

@@ -10,11 +10,11 @@ namespace Teniry.CqrsTests.CoreTests.CommandTests.NoReturnValue;
 
 public class RunInTransactionWithRetryCommandTests {
     private readonly ServiceCollection _services;
-    private readonly UnitOfWorkStub         _uow;
+    private readonly UnitOfWorkStub _uow;
 
     public RunInTransactionWithRetryCommandTests() {
-        _services = new ServiceCollection();
-        _uow      = new UnitOfWorkStub();
+        _services = new();
+        _uow = new();
         _services.AddScoped<UnitOfWorkStub>(_ => _uow);
     }
 
@@ -42,7 +42,8 @@ public class RunInTransactionWithRetryCommandTests {
                 seventh => seventh.Should().Be("Begin transaction"),
                 eighth => eighth.Should().Be("Clear changes"),
                 ninth => ninth.Should().Be("Begin transaction"),
-                tenth => tenth.Should().Be("Commit transaction"));
+                tenth => tenth.Should().Be("Commit transaction")
+            );
     }
 
     [Fact]
@@ -68,7 +69,8 @@ public class RunInTransactionWithRetryCommandTests {
                 sixth => sixth.Should().Be("Clear changes"),
                 seventh => seventh.Should().Be("Begin transaction"),
                 eighth => eighth.Should().Be("Clear changes"),
-                ninth => ninth.Should().Be("Begin transaction"));
+                ninth => ninth.Should().Be("Begin transaction")
+            );
     }
 
     [Fact]
@@ -87,7 +89,7 @@ public class RunInTransactionWithRetryCommandTests {
         _uow.Calls.Should()
             .SatisfyRespectively(first => first.Should().Be("Begin transaction"));
     }
-    
+
     [Fact]
     public async Task Should_RetryCustomNumberOfTimes_When_CustomNumberIsSet() {
         // Arrange
@@ -108,9 +110,10 @@ public class RunInTransactionWithRetryCommandTests {
                 second => second.Should().Be("Clear changes"),
                 third => third.Should().Be("Begin transaction"),
                 fourth => fourth.Should().Be("Clear changes"),
-                fifth => fifth.Should().Be("Begin transaction"));
+                fifth => fifth.Should().Be("Begin transaction")
+            );
     }
-    
+
     [Fact]
     public async Task Should_NotRetryOnAnyException_Except_CustomExceptionSetInHandler() {
         // Arrange
@@ -129,16 +132,17 @@ public class RunInTransactionWithRetryCommandTests {
     }
 
     private class UpdateTestDataCommand(int timesToFail, Exception throwOnFail) {
-        public int       TimesToFail { get; set; } = timesToFail;
-        public Exception ThrowOnFail { get; }      = throwOnFail;
+        public int TimesToFail { get; } = timesToFail;
+        public Exception ThrowOnFail { get; } = throwOnFail;
     }
 
-    private class UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand>, ITransactionalHandler<UnitOfWorkStub> {
-        private int _timesFailed = 0;
+    private class
+        UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand>, ITransactionalHandler<UnitOfWorkStub> {
+        private int _timesFailed;
 
         public Task HandleAsync(
             UpdateTestDataCommand command,
-            CancellationToken     cancellation
+            CancellationToken cancellation
         ) {
             if (_timesFailed == command.TimesToFail) {
                 return Task.CompletedTask;
@@ -150,24 +154,22 @@ public class RunInTransactionWithRetryCommandTests {
         }
     }
 
-    private class CustomRetryCommand(int timesToFail, Exception throwOnFail)
-    {
-        public int TimesToFail { get; set; } = timesToFail;
+    private class CustomRetryCommand(int timesToFail, Exception throwOnFail) {
+        public int TimesToFail { get; } = timesToFail;
         public Exception ThrowOnFail { get; } = throwOnFail;
     }
 
-    private class CustomRetryHandler : ICommandHandler<CustomRetryCommand>, ITransactionalHandler<UnitOfWorkStub>,
-        IRetriableOperation
-    {
-        private int _timesFailed = 0;
+    private class CustomRetryHandler
+        : ICommandHandler<CustomRetryCommand>,
+            ITransactionalHandler<UnitOfWorkStub>,
+            IRetriableOperation {
+        private int _timesFailed;
 
         public Task HandleAsync(
             CustomRetryCommand command,
             CancellationToken cancellation
-        )
-        {
-            if (_timesFailed == command.TimesToFail)
-            {
+        ) {
+            if (_timesFailed == command.TimesToFail) {
                 return Task.CompletedTask;
             }
 
@@ -176,18 +178,14 @@ public class RunInTransactionWithRetryCommandTests {
             throw command.ThrowOnFail;
         }
 
-        public int GetMaxRetryAttempts()
-        {
+        public int GetMaxRetryAttempts() {
             return 3;
         }
 
-        public bool RetryOnException(Exception ex)
-        {
+        public bool RetryOnException(Exception ex) {
             return ex is TestRetryException;
         }
     }
 
-    private class TestRetryException : Exception
-    {
-    }
+    private class TestRetryException : Exception { }
 }

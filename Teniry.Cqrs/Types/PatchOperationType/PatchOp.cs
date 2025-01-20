@@ -3,22 +3,22 @@ using Teniry.Cqrs.Types.PatchOperationType.Exceptions;
 namespace Teniry.Cqrs.Types.PatchOperationType;
 
 public class PatchOp<T> {
-    public T?          Value { get; set; }
-    public PatchOpType Type  { get; set; }
+    public T? Value { get; set; }
+    public PatchOpType Type { get; set; }
 
     public PatchOp(T? value, PatchOpType type) {
         Value = value;
-        Type  = type;
+        Type = type;
     }
 }
 
 public static class PatchOp {
     public static async Task<bool> HandleAsync<T>(
-        PatchOp<T>?                       op,
-        string                            property,
-        Func<T, CancellationToken, Task>? updateAsync  = null,
-        Func<CancellationToken, Task>?    removeAsync  = null,
-        CancellationToken                 cancellation = default
+        PatchOp<T>? op,
+        string property,
+        Func<T, CancellationToken, Task>? updateAsync = null,
+        Func<CancellationToken, Task>? removeAsync = null,
+        CancellationToken cancellation = default
     ) {
         if (op is null) return false;
 
@@ -42,9 +42,9 @@ public static class PatchOp {
 
     public static bool Handle<T>(
         PatchOp<T>? op,
-        string      property,
-        Action<T>?  update = null,
-        Action?     remove = null
+        string property,
+        Action<T>? update = null,
+        Action? remove = null
     ) {
         if (op is null) return false;
 

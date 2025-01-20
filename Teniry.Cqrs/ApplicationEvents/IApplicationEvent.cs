@@ -1,4 +1,3 @@
 ﻿namespace Teniry.Cqrs.ApplicationEvents;
 
-public interface IApplicationEvent
-{ }
+public interface IApplicationEvent { }

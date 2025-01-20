@@ -7,10 +7,10 @@ namespace Teniry.CqrsTests.Helpers;
 
 internal class UnitOfWorkStub : IUnitOfWork {
     private readonly CallValidator _callValidator = new();
-    public           List<string>  Calls => _callValidator.Calls;
+    public List<string> Calls => _callValidator.Calls;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(
-        IsolationLevel    isolationLevel,
+        IsolationLevel isolationLevel,
         CancellationToken cancellationToken = default
     ) {
         _callValidator.Called("Begin transaction");

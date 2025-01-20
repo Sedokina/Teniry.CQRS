@@ -14,37 +14,37 @@ public static class CqrsServicesExtensions {
     }
 
     public static void AddCqrs(
-        this   IServiceCollection services,
-        params Assembly[]         assemblies
+        this IServiceCollection services,
+        params Assembly[] assemblies
     ) {
         services.TryAddScoped<ICommandDispatcher, CommandDispatcher>();
         services.AddScoped<IQueryDispatcher, QueryDispatcher>();
 
         services.Scan(
-            selector =>
-            {
+            selector => {
                 selector.FromAssemblies(assemblies)
                     .AddClasses(filter => { filter.AssignableTo(typeof(IQueryHandler<,>)); })
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
-            });
+            }
+        );
 
         services.Scan(
-            selector =>
-            {
+            selector => {
                 selector.FromAssemblies(assemblies)
                     .AddClasses(filter => { filter.AssignableTo(typeof(ICommandHandler<,>)); })
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
-            });
+            }
+        );
 
         services.Scan(
-            selector =>
-            {
+            selector => {
                 selector.FromAssemblies(assemblies)
                     .AddClasses(filter => { filter.AssignableTo(typeof(ICommandHandler<>)); })
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
-            });
+            }
+        );
     }
 }

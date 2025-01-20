@@ -4,10 +4,9 @@ public interface IDefineSortable : ISorted {
     protected string[] GetSortKeys();
 
     public string[] GetSortKeysWithDirection() {
-        var keys   = GetSortKeys();
-        var orders = new[]
-        {
-            SortDirection.Asc.ToString().ToLower(), 
+        var keys = GetSortKeys();
+        var orders = new[] {
+            SortDirection.Asc.ToString().ToLower(),
             SortDirection.Desc.ToString().ToLower()
         };
 

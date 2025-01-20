@@ -8,20 +8,18 @@ using Teniry.CqrsTests.Helpers;
 
 namespace Teniry.CqrsTests.CoreTests.CommandTests.HasReturnValue;
 
-public class RunInTransactionWithRetryCommandWithReturnValueTests
-{
+public class RunInTransactionWithRetryCommandWithReturnValueTests {
     private readonly ServiceCollection _services;
-    private readonly UnitOfWorkStub         _uow;
+    private readonly UnitOfWorkStub _uow;
 
     public RunInTransactionWithRetryCommandWithReturnValueTests() {
-        _services = new ServiceCollection();
-        _uow      = new UnitOfWorkStub();
+        _services = new();
+        _uow = new();
         _services.AddScoped<UnitOfWorkStub>(_ => _uow);
     }
-    
+
     [Fact]
-    public async Task Should_RetryHandle_When_DbExceptionThrown()
-    {
+    public async Task Should_RetryHandle_When_DbExceptionThrown() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand, string>, UpdateTestDataHandler>();
         var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
@@ -29,7 +27,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
         // Act
         var exception = new InvalidOperationException("", new DbUpdateException());
         var result = await dispatcher
-            .DispatchAsync<UpdateTestDataCommand, string>(new UpdateTestDataCommand(4, exception), new());
+            .DispatchAsync<UpdateTestDataCommand, string>(new(4, exception), new());
 
         // Assert
         result.Should().Be("Handler called");
@@ -49,8 +47,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
     }
 
     [Fact]
-    public async Task Should_ThrowException_When_RetryAttemptsExceeded()
-    {
+    public async Task Should_ThrowException_When_RetryAttemptsExceeded() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand, string>, UpdateTestDataHandler>();
         var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
@@ -58,7 +55,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
         // Act
         var exception = new InvalidOperationException("", new DbUpdateException());
         var act = async () => await dispatcher
-            .DispatchAsync<UpdateTestDataCommand, string>(new UpdateTestDataCommand(5, exception), new());
+            .DispatchAsync<UpdateTestDataCommand, string>(new(5, exception), new());
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
@@ -77,8 +74,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
     }
 
     [Fact]
-    public async Task Should_NotRetry_When_NotDbUpdateExceptionThrown()
-    {
+    public async Task Should_NotRetry_When_NotDbUpdateExceptionThrown() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand, string>, UpdateTestDataHandler>();
         var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
@@ -86,16 +82,14 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
         // Act
         var exception = new InvalidOperationException();
         var act = async () => await dispatcher
-            .DispatchAsync<UpdateTestDataCommand, string>(new UpdateTestDataCommand(4, exception), new());
+            .DispatchAsync<UpdateTestDataCommand, string>(new(4, exception), new());
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
         _uow.Calls.Should()
-            .SatisfyRespectively(
-                first => first.Should().Be("Begin transaction")
-            );
+            .SatisfyRespectively(first => first.Should().Be("Begin transaction"));
     }
-    
+
     [Fact]
     public async Task Should_RetryCustomNumberOfTimes_When_CustomNumberIsSet() {
         // Arrange
@@ -105,7 +99,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
         // Act
         var exception = new TestRetryException();
         var act = async () =>
-            await dispatcher.DispatchAsync<CustomRetryCommand, string>(new CustomRetryCommand(5, exception), new());
+            await dispatcher.DispatchAsync<CustomRetryCommand, string>(new(5, exception), new());
 
         // Assert
         await act.Should().ThrowAsync<TestRetryException>();
@@ -116,9 +110,10 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
                 second => second.Should().Be("Clear changes"),
                 third => third.Should().Be("Begin transaction"),
                 fourth => fourth.Should().Be("Clear changes"),
-                fifth => fifth.Should().Be("Begin transaction"));
+                fifth => fifth.Should().Be("Begin transaction")
+            );
     }
-    
+
     [Fact]
     public async Task Should_NotRetryOnAnyException_Except_CustomExceptionSetInHandler() {
         // Arrange
@@ -128,7 +123,7 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
         // Act
         var exception = new Exception();
         var act = async () =>
-            await dispatcher.DispatchAsync<CustomRetryCommand, string>(new CustomRetryCommand(5, exception), new());
+            await dispatcher.DispatchAsync<CustomRetryCommand, string>(new(5, exception), new());
 
         // Assert
         await act.Should().ThrowAsync<Exception>();
@@ -136,49 +131,42 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
             .SatisfyRespectively(first => first.Should().Be("Begin transaction"));
     }
 
-
-    private class UpdateTestDataCommand(int timesToFail, Exception throwOnFail)
-    {
-        public int TimesToFail { get; set; } = timesToFail;
+    private class UpdateTestDataCommand(int timesToFail, Exception throwOnFail) {
+        public int TimesToFail { get; } = timesToFail;
         public Exception ThrowOnFail { get; } = throwOnFail;
     }
-    
-    private class UpdateTestDataHandler
-        : ICommandHandler<UpdateTestDataCommand, string>, ITransactionalHandler<UnitOfWorkStub>
-    {
-        private int _timesFailed = 0;
 
-        public Task<string> HandleAsync(UpdateTestDataCommand command, CancellationToken cancellation)
-        {
-            if (_timesFailed == command.TimesToFail)
-            {
+    private class UpdateTestDataHandler
+        : ICommandHandler<UpdateTestDataCommand, string>, ITransactionalHandler<UnitOfWorkStub> {
+        private int _timesFailed;
+
+        public Task<string> HandleAsync(UpdateTestDataCommand command, CancellationToken cancellation) {
+            if (_timesFailed == command.TimesToFail) {
                 return Task.FromResult("Handler called");
             }
 
             _timesFailed++;
+
             throw command.ThrowOnFail;
         }
     }
-    
-    
-    private class CustomRetryCommand(int timesToFail, Exception throwOnFail)
-    {
-        public int TimesToFail { get; set; } = timesToFail;
+
+    private class CustomRetryCommand(int timesToFail, Exception throwOnFail) {
+        public int TimesToFail { get; } = timesToFail;
         public Exception ThrowOnFail { get; } = throwOnFail;
     }
 
-    private class CustomRetryHandler : ICommandHandler<CustomRetryCommand, string>, ITransactionalHandler<UnitOfWorkStub>,
-        IRetriableOperation
-    {
-        private int _timesFailed = 0;
+    private class CustomRetryHandler
+        : ICommandHandler<CustomRetryCommand, string>,
+            ITransactionalHandler<UnitOfWorkStub>,
+            IRetriableOperation {
+        private int _timesFailed;
 
         public Task<string> HandleAsync(
             CustomRetryCommand command,
             CancellationToken cancellation
-        )
-        {
-            if (_timesFailed == command.TimesToFail)
-            {
+        ) {
+            if (_timesFailed == command.TimesToFail) {
                 return Task.FromResult("Handler called");
             }
 
@@ -187,18 +175,14 @@ public class RunInTransactionWithRetryCommandWithReturnValueTests
             throw command.ThrowOnFail;
         }
 
-        public int GetMaxRetryAttempts()
-        {
+        public int GetMaxRetryAttempts() {
             return 3;
         }
-        
-        public bool RetryOnException(Exception ex)
-        {
+
+        public bool RetryOnException(Exception ex) {
             return ex is TestRetryException;
         }
     }
-    
-    private class TestRetryException : Exception
-    {
-    }
+
+    private class TestRetryException : Exception { }
 }

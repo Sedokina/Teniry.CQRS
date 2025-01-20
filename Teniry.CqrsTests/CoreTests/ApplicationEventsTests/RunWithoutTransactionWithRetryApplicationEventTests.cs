@@ -8,17 +8,17 @@ using Teniry.CqrsTests.Helpers;
 namespace Teniry.CqrsTests.CoreTests.ApplicationEventsTests;
 
 public class RunWithoutTransactionWithRetryApplicationEventTests {
-    private readonly ServiceCollection                      _services;
-    private readonly UnitOfWorkStub                              _uow;
     private readonly LoggerStub<ApplicationEventDispatcher> _logger;
-    
+    private readonly ServiceCollection _services;
+    private readonly UnitOfWorkStub _uow;
+
     public RunWithoutTransactionWithRetryApplicationEventTests() {
-        _services      = new ServiceCollection();
-        _uow = new UnitOfWorkStub();
+        _services = new();
+        _uow = new();
         _services.AddScoped<UnitOfWorkStub>(_ => _uow);
-        _logger = new LoggerStub<ApplicationEventDispatcher>();
+        _logger = new();
     }
-    
+
     [Fact]
     public async Task Should_RetryHandle_When_SpecifiedExceptionThrown() {
         // Arrange
@@ -37,9 +37,10 @@ public class RunWithoutTransactionWithRetryApplicationEventTests {
                 third => third.Should().Be("Begin transaction"),
                 fourth => fourth.Should().Be("Clear changes"),
                 fifth => fifth.Should().Be("Begin transaction"),
-                sixth => sixth.Should().Be("Commit transaction"));
+                sixth => sixth.Should().Be("Commit transaction")
+            );
     }
-    
+
     [Fact]
     public async Task Should_LogThrowException_When_RetryAttemptsExceeded() {
         // Arrange
@@ -58,7 +59,8 @@ public class RunWithoutTransactionWithRetryApplicationEventTests {
                 second => second.Should().Be("Clear changes"),
                 third => third.Should().Be("Begin transaction"),
                 fourth => fourth.Should().Be("Clear changes"),
-                fifth => fifth.Should().Be("Begin transaction"));
+                fifth => fifth.Should().Be("Begin transaction")
+            );
 
         _logger.Calls.Should()
             .SatisfyRespectively(first => first.Should().Be("Error TestRetryException logged"));
@@ -78,22 +80,21 @@ public class RunWithoutTransactionWithRetryApplicationEventTests {
         // Assert
         _uow.Calls.Should()
             .HaveCount(1)
-            .And.SatisfyRespectively(
-                first => first.Should().Be("Begin transaction"));
+            .And.SatisfyRespectively(first => first.Should().Be("Begin transaction"));
     }
-    
+
     private class CustomRetryEvent(int timesToFail, Exception throwOnFail) : IApplicationEvent {
-        public int       TimesToFail { get; set; } = timesToFail;
-        public Exception ThrowOnFail { get; }      = throwOnFail;
+        public int TimesToFail { get; } = timesToFail;
+        public Exception ThrowOnFail { get; } = throwOnFail;
     }
 
     private class CustomRetryEventHandler
         : IApplicationEventHandler<CustomRetryEvent>, ITransactionalHandler<UnitOfWorkStub>, IRetriableOperation {
-        private int _timesFailed = 0;
+        private int _timesFailed;
 
         public Task HandleAsync(
             CustomRetryEvent applicationEvent,
-            CancellationToken    cancellation
+            CancellationToken cancellation
         ) {
             if (_timesFailed == applicationEvent.TimesToFail) {
                 return Task.FromResult("Handler called");
@@ -104,18 +105,14 @@ public class RunWithoutTransactionWithRetryApplicationEventTests {
             throw applicationEvent.ThrowOnFail;
         }
 
-        public int GetMaxRetryAttempts()
-        {
+        public int GetMaxRetryAttempts() {
             return 3;
         }
-        
-        public bool RetryOnException(Exception ex)
-        {
+
+        public bool RetryOnException(Exception ex) {
             return ex is TestRetryException;
         }
     }
-    
-    private class TestRetryException : Exception
-    {
-    }
+
+    private class TestRetryException : Exception { }
 }

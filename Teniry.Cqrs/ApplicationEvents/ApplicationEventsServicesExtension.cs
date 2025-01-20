@@ -13,18 +13,18 @@ public static class ApplicationEventsServicesExtension {
     }
 
     public static void AddApplicationEvents(
-        this   IServiceCollection services,
-        params Assembly[]         assemblies
+        this IServiceCollection services,
+        params Assembly[] assemblies
     ) {
         services.TryAddScoped<IApplicationEventDispatcher, ApplicationEventDispatcher>();
 
         services.Scan(
-            selector =>
-            {
+            selector => {
                 selector.FromAssemblies(assemblies)
                     .AddClasses(filter => { filter.AssignableTo(typeof(IApplicationEventHandler<>)); })
                     .AsImplementedInterfaces().WithScopedLifetime();
-            });
+            }
+        );
 
         services.AddSingleton<EventsChannel>();
         services.AddHostedService<EventsChannelHandlerBackgroundService>();

@@ -4,12 +4,12 @@ using Teniry.Cqrs.Exceptions;
 namespace Teniry.Cqrs.Types.PatchOperationType.Exceptions;
 
 public class PatchOperationNotAllowedWithoutValueException : ExceptionBase {
-    public PatchOpType OpType   { get; }
-    public string      Property { get; }
+    public PatchOpType OpType { get; }
+    public string Property { get; }
 
     public PatchOperationNotAllowedWithoutValueException(PatchOpType opType, string property)
         : base("Patch operation of type {0} not allowed for property {1}") {
-        OpType   = opType;
+        OpType = opType;
         Property = property;
     }
 

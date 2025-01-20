@@ -7,18 +7,18 @@ using Teniry.CqrsTests.Helpers;
 namespace Teniry.CqrsTests.CoreTests.ApplicationEventsTests;
 
 public class RunInTransactionApplicationEventTests {
-    private readonly ServiceCollection                      _services;
-    private readonly CallValidator                          _callValidator;
-    private readonly UnitOfWorkStub                              _uow;
+    private readonly CallValidator _callValidator;
     private readonly LoggerStub<ApplicationEventDispatcher> _logger;
+    private readonly ServiceCollection _services;
+    private readonly UnitOfWorkStub _uow;
 
     public RunInTransactionApplicationEventTests() {
-        _services      = new ServiceCollection();
-        _callValidator = new CallValidator();
+        _services = new();
+        _callValidator = new();
         _services.AddScoped<CallValidator>(_ => _callValidator);
-        _uow = new UnitOfWorkStub();
+        _uow = new();
         _services.AddScoped<UnitOfWorkStub>(_ => _uow);
-        _logger = new LoggerStub<ApplicationEventDispatcher>();
+        _logger = new();
     }
 
     [Fact]
@@ -38,7 +38,8 @@ public class RunInTransactionApplicationEventTests {
         _uow.Calls.Should()
             .SatisfyRespectively(
                 first => first.Should().Be("Begin transaction"),
-                second => second.Should().Be("Commit transaction"));
+                second => second.Should().Be("Commit transaction")
+            );
     }
 
     [Fact]
@@ -59,21 +60,21 @@ public class RunInTransactionApplicationEventTests {
             .SatisfyRespectively(
                 // Second call should not be retried because it is not db update exception
                 second => second.Should().Be("Second call"),
-                first => first.Should().Be("First call"));
+                first => first.Should().Be("First call")
+            );
 
         _logger.Calls.Should()
             .HaveCount(1).And
             .SatisfyRespectively(first => first.Should().Be("Error InvalidOperationException logged"));
     }
 
-    private class TestDataUpdatedEvent : IApplicationEvent {
-    }
+    private class TestDataUpdatedEvent : IApplicationEvent { }
 
     private class FirstEventHandler(CallValidator callValidator)
         : IApplicationEventHandler<TestDataUpdatedEvent>, ITransactionalHandler<UnitOfWorkStub> {
         public Task HandleAsync(
             TestDataUpdatedEvent applicationEvent,
-            CancellationToken    cancellation
+            CancellationToken cancellation
         ) {
             callValidator.Called("First call");
 
@@ -85,7 +86,7 @@ public class RunInTransactionApplicationEventTests {
         : IApplicationEventHandler<TestDataUpdatedEvent>, ITransactionalHandler<UnitOfWorkStub> {
         public Task HandleAsync(
             TestDataUpdatedEvent applicationEvent,
-            CancellationToken    cancellation
+            CancellationToken cancellation
         ) {
             callValidator.Called("Second call");
 

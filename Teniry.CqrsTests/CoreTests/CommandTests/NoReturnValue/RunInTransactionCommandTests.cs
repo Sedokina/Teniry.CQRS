@@ -8,11 +8,11 @@ namespace Teniry.CqrsTests.CoreTests.CommandTests.NoReturnValue;
 
 public class RunInTransactionCommandTests {
     private readonly ServiceCollection _services;
-    private readonly UnitOfWorkStub         _uow;
+    private readonly UnitOfWorkStub _uow;
 
     public RunInTransactionCommandTests() {
-        _services = new ServiceCollection();
-        _uow      = new UnitOfWorkStub();
+        _services = new();
+        _uow = new();
         _services.AddScoped<UnitOfWorkStub>(_ => _uow);
     }
 
@@ -46,28 +46,28 @@ public class RunInTransactionCommandTests {
         _uow.Calls.Should()
             .SatisfyRespectively(
                 first => first.Should().Be("Begin transaction"),
-                second => second.Should().Be("Commit transaction"));
+                second => second.Should().Be("Commit transaction")
+            );
     }
 
-    private class NoUowUpdateTestDataCommand {
-    }
+    private class NoUowUpdateTestDataCommand { }
 
     private class NoUowUpdateTestDataHandler : ICommandHandler<NoUowUpdateTestDataCommand>, ITransactionalHandler {
         public Task HandleAsync(
             NoUowUpdateTestDataCommand command,
-            CancellationToken          cancellation
+            CancellationToken cancellation
         ) {
             return Task.CompletedTask;
         }
     }
 
-    private class UpdateTestDataCommand {
-    }
+    private class UpdateTestDataCommand { }
 
-    private class UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand>, ITransactionalHandler<UnitOfWorkStub> {
+    private class
+        UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand>, ITransactionalHandler<UnitOfWorkStub> {
         public Task HandleAsync(
             UpdateTestDataCommand command,
-            CancellationToken     cancellation
+            CancellationToken cancellation
         ) {
             return Task.CompletedTask;
         }

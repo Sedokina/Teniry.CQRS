@@ -9,7 +9,7 @@ public class RunWithoutTransactionCommandTests {
     private readonly ServiceCollection _services;
 
     public RunWithoutTransactionCommandTests() {
-        _services = new ServiceCollection();
+        _services = new();
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class RunWithoutTransactionCommandTests {
     }
 
     private class UpdateTestDataCommand(Guid id, string text) {
-        public Guid   Id   { get; set; } = id;
-        public string Text { get; set; } = text;
+        public Guid Id { get; } = id;
+        public string Text { get; } = text;
     }
 
     private class UpdateTestDataValidator : AbstractValidator<UpdateTestDataCommand> {
@@ -56,7 +56,7 @@ public class RunWithoutTransactionCommandTests {
     private class UpdateTestDataHandler : ICommandHandler<UpdateTestDataCommand> {
         public Task HandleAsync(
             UpdateTestDataCommand command,
-            CancellationToken     cancellation
+            CancellationToken cancellation
         ) {
             throw new InvalidOperationException("Handler called");
         }

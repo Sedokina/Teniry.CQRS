@@ -13,23 +13,19 @@ public abstract class QueryableFilter<TEntity> {
     public IQueryable<TEntity> ApplySort(IQueryable<TEntity> query) {
         if (Sorts is null || !Sorts.Any()) return DefaultSort(query);
 
-        var                        availableSorts = Sort();
-        IOrderedQueryable<TEntity> ordered        = null!;
+        var availableSorts = Sort();
+        IOrderedQueryable<TEntity> ordered = null!;
 
-        foreach (var sortKey in Sorts)
-        {
+        foreach (var sortKey in Sorts) {
             if (!SortKey.TryParse(sortKey, out var orderProperty)) continue;
 
             if (!availableSorts.TryGetValue(orderProperty.Property, out var orderByFunc)) continue;
 
-            if (orderProperty.Direction == SortDirection.Asc)
-            {
-                ordered = ordered == null ? 
+            if (orderProperty.Direction == SortDirection.Asc) {
+                ordered = ordered == null ?
                     query.OrderBy(orderByFunc) :
                     ordered.ThenBy(orderByFunc);
-            }
-            else
-            {
+            } else {
                 ordered = ordered == null ?
                     query.OrderByDescending(orderByFunc) :
                     ordered.ThenByDescending(orderByFunc);

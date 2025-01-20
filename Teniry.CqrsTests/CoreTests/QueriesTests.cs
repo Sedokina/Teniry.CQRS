@@ -8,7 +8,7 @@ public class QueriesTests {
     private readonly ServiceCollection _services;
 
     public QueriesTests() {
-        _services = new ServiceCollection();
+        _services = new();
     }
 
     [Fact]
@@ -18,7 +18,7 @@ public class QueriesTests {
         var dispatcher = new QueryDispatcher(_services.BuildServiceProvider());
 
         // Act
-        var handlerResult = await dispatcher.DispatchAsync<GetDataQuery, DataResult>(new GetDataQuery(1), new());
+        var handlerResult = await dispatcher.DispatchAsync<GetDataQuery, DataResult>(new(1), new());
 
         // Assert
         handlerResult.Should().NotBeNull();
@@ -31,12 +31,11 @@ public class QueriesTests {
         var dispatcher = new QueryDispatcher(_services.BuildServiceProvider());
 
         // Act
-        var act = async () => await dispatcher.DispatchAsync<GetDataQuery, DataResult>(new GetDataQuery(1), new());
+        var act = async () => await dispatcher.DispatchAsync<GetDataQuery, DataResult>(new(1), new());
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
-
 
     private class GetDataQuery(int id) {
         public int Id { get; } = id;
@@ -44,13 +43,12 @@ public class QueriesTests {
 
     private class GetDataHandler : IQueryHandler<GetDataQuery, DataResult> {
         public Task<DataResult> HandleAsync(
-            GetDataQuery      query,
+            GetDataQuery query,
             CancellationToken cancellation
         ) {
             return Task.FromResult(new DataResult($"handled {query.Id}"));
         }
     }
-
 
     private class DataResult(string result) {
         public string Result { get; } = result;

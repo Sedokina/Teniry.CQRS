@@ -14,7 +14,7 @@ public interface IUnitOfWork {
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public Task<IDbContextTransaction> BeginTransactionAsync(
-        IsolationLevel    isolationLevel,
+        IsolationLevel isolationLevel,
         CancellationToken cancellationToken = default
     );
 

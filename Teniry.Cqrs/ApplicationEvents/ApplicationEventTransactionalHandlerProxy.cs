@@ -7,14 +7,14 @@ namespace Teniry.Cqrs.ApplicationEvents;
 internal class ApplicationEventTransactionalHandlerProxy<TApplicationEvent>
     : IApplicationEventHandler<TApplicationEvent>, IRetriableOperation where TApplicationEvent : IApplicationEvent {
     private readonly IApplicationEventHandler<TApplicationEvent> _handler;
-    private readonly IUnitOfWork                                 _uow;
+    private readonly IUnitOfWork _uow;
 
     public ApplicationEventTransactionalHandlerProxy(
         IApplicationEventHandler<TApplicationEvent> handler,
-        IUnitOfWork                                 uow
+        IUnitOfWork uow
     ) {
         _handler = handler;
-        _uow     = uow;
+        _uow = uow;
     }
 
     public async Task HandleAsync(
@@ -30,29 +30,26 @@ internal class ApplicationEventTransactionalHandlerProxy<TApplicationEvent>
             await _uow.CommitTransactionAsync(cancellation).ConfigureAwait(false);
         }
     }
-    
-    public int GetMaxRetryAttempts()
-    {
-        if (_handler is IRetriableOperation retriableOperation)
-        {
+
+    public int GetMaxRetryAttempts() {
+        if (_handler is IRetriableOperation retriableOperation) {
             return retriableOperation.GetMaxRetryAttempts();
         }
-        
+
         return IRetriableOperation.DefaultRetryAttempts;
     }
 
     public ValueTask CleanupBeforeRetryAsync() {
         _uow.ClearChanges();
+
         return ValueTask.CompletedTask;
     }
 
-    public bool RetryOnException(Exception ex)
-    {
-        if (_handler is IRetriableOperation retriableOperation)
-        {
+    public bool RetryOnException(Exception ex) {
+        if (_handler is IRetriableOperation retriableOperation) {
             return retriableOperation.RetryOnException(ex) ||
-                   ex is InvalidOperationException && ex.InnerException is DbUpdateException ||
-                   ex is DbUpdateException;
+                ex is InvalidOperationException && ex.InnerException is DbUpdateException ||
+                ex is DbUpdateException;
         }
 
         return ex is InvalidOperationException && ex.InnerException is DbUpdateException || ex is DbUpdateException;

@@ -6,16 +6,15 @@ using Teniry.CqrsTests.Helpers;
 namespace Teniry.CqrsTests.CoreTests.ApplicationEventsTests;
 
 public class RunWithoutTransactionWithoutRetryApplicationEventTests {
-    private readonly ServiceCollection                      _services;
-    private readonly CallValidator                          _callValidator;
+    private readonly CallValidator _callValidator;
     private readonly LoggerStub<ApplicationEventDispatcher> _logger;
-
+    private readonly ServiceCollection _services;
 
     public RunWithoutTransactionWithoutRetryApplicationEventTests() {
-        _services      = new ServiceCollection();
-        _callValidator = new CallValidator();
+        _services = new();
+        _callValidator = new();
         _services.AddScoped<CallValidator>(_ => _callValidator);
-        _logger = new LoggerStub<ApplicationEventDispatcher>();
+        _logger = new();
     }
 
     [Fact]
@@ -50,20 +49,20 @@ public class RunWithoutTransactionWithoutRetryApplicationEventTests {
         _callValidator.Calls.Should()
             .SatisfyRespectively(
                 first => first.Should().Be("Not valid call"),
-                second => second.Should().Be("Valid call"));
+                second => second.Should().Be("Valid call")
+            );
 
         _logger.Calls.Should()
             .HaveCount(1).And
             .SatisfyRespectively(first => first.Should().Be("Error InvalidOperationException logged"));
     }
 
-    private class TestDataUpdatedEvent : IApplicationEvent {
-    }
+    private class TestDataUpdatedEvent : IApplicationEvent { }
 
     private class NotValidEventHandler(CallValidator callValidator) : IApplicationEventHandler<TestDataUpdatedEvent> {
         public Task HandleAsync(
             TestDataUpdatedEvent applicationEvent,
-            CancellationToken    cancellation
+            CancellationToken cancellation
         ) {
             callValidator.Called("Not valid call");
 
@@ -74,7 +73,7 @@ public class RunWithoutTransactionWithoutRetryApplicationEventTests {
     private class ValidEventHandler(CallValidator callValidator) : IApplicationEventHandler<TestDataUpdatedEvent> {
         public Task HandleAsync(
             TestDataUpdatedEvent applicationEvent,
-            CancellationToken    cancellation
+            CancellationToken cancellation
         ) {
             callValidator.Called("Valid call");
 
