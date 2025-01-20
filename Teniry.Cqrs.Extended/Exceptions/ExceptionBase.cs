@@ -33,6 +33,6 @@ public class ExceptionBase : Exception {
     }
 
     protected virtual object[] GetFormatParams(IStringLocalizer stringLocalizer) {
-        return Array.Empty<object>();
+        return [];
     }
 }
