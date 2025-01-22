@@ -48,6 +48,33 @@ public class RunInTransactionWithRetryApplicationEventTests {
     }
 
     [Fact]
+    public async Task Should_RetryHandle_When_DbExceptionThrown_When_EventCastedToIApplicationEvent() {
+        // Arrange
+        _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, UpdateTestDataHandler>();
+        var dispatcher = new ApplicationEventDispatcher(_services.BuildServiceProvider(), _logger);
+
+        // Act
+        var exception = new InvalidOperationException("", new DbUpdateException());
+        await dispatcher
+            .DispatchAsync((IApplicationEvent)new TestDataUpdatedEvent(4, exception), new());
+
+        // Assert
+        _uow.Calls.Should()
+            .SatisfyRespectively(
+                first => first.Should().Be("Begin transaction"),
+                second => second.Should().Be("Clear changes"),
+                third => third.Should().Be("Begin transaction"),
+                fourth => fourth.Should().Be("Clear changes"),
+                fifth => fifth.Should().Be("Begin transaction"),
+                sixth => sixth.Should().Be("Clear changes"),
+                seventh => seventh.Should().Be("Begin transaction"),
+                eighth => eighth.Should().Be("Clear changes"),
+                ninth => ninth.Should().Be("Begin transaction"),
+                tenth => tenth.Should().Be("Commit transaction")
+            );
+    }
+
+    [Fact]
     public async Task Should_LogThrowException_When_RetryAttemptsExceeded() {
         // Arrange
         _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, UpdateTestDataHandler>();

@@ -2,7 +2,7 @@
 
 namespace Teniry.Cqrs.ApplicationEvents.EventsChannelHandler;
 
-internal class EventsChannel {
+public class EventsChannel {
     public Channel<IApplicationEvent> EventsQueue { get; set; }
 
     public EventsChannel() {

@@ -16,7 +16,7 @@ public class RunWithoutTransactionCommandTests {
     public async Task Should_RunHandler_When_NoValidatorRegistered() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand>, UpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var act = async () =>
@@ -31,7 +31,7 @@ public class RunWithoutTransactionCommandTests {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand>, UpdateTestDataHandler>();
         _services.AddScoped<IValidator<UpdateTestDataCommand>, UpdateTestDataValidator>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var act = async () =>

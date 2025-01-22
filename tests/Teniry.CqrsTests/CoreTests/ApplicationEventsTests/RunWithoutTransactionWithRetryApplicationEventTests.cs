@@ -42,6 +42,28 @@ public class RunWithoutTransactionWithRetryApplicationEventTests {
     }
 
     [Fact]
+    public async Task Should_RetryHandle_When_SpecifiedExceptionThrown_When_EventCastedToIApplicationEvent() {
+        // Arrange
+        _services.AddScoped<IApplicationEventHandler<CustomRetryEvent>, CustomRetryEventHandler>();
+        var dispatcher = new ApplicationEventDispatcher(_services.BuildServiceProvider(), _logger);
+
+        // Act
+        var exception = new TestRetryException();
+        await dispatcher.DispatchAsync((IApplicationEvent)new CustomRetryEvent(2, exception), new());
+
+        // Assert
+        _uow.Calls.Should()
+            .SatisfyRespectively(
+                first => first.Should().Be("Begin transaction"),
+                second => second.Should().Be("Clear changes"),
+                third => third.Should().Be("Begin transaction"),
+                fourth => fourth.Should().Be("Clear changes"),
+                fifth => fifth.Should().Be("Begin transaction"),
+                sixth => sixth.Should().Be("Commit transaction")
+            );
+    }
+
+    [Fact]
     public async Task Should_LogThrowException_When_RetryAttemptsExceeded() {
         // Arrange
         _services.AddScoped<IApplicationEventHandler<CustomRetryEvent>, CustomRetryEventHandler>();

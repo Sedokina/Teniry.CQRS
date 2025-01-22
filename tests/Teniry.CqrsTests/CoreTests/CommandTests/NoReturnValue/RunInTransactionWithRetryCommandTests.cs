@@ -22,7 +22,7 @@ public class RunInTransactionWithRetryCommandTests {
     public async Task Should_RetryHandle_When_DbExceptionThrown() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand>, UpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var exception = new InvalidOperationException("", new DbUpdateException());
@@ -50,7 +50,7 @@ public class RunInTransactionWithRetryCommandTests {
     public async Task Should_ThrowException_When_RetryAttemptsExceeded() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand>, UpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var exception = new InvalidOperationException("", new DbUpdateException());
@@ -77,7 +77,7 @@ public class RunInTransactionWithRetryCommandTests {
     public async Task Should_NotRetry_When_NotDbUpdateExceptionThrown() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand>, UpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var exception = new InvalidOperationException();
@@ -94,7 +94,7 @@ public class RunInTransactionWithRetryCommandTests {
     public async Task Should_RetryCustomNumberOfTimes_When_CustomNumberIsSet() {
         // Arrange
         _services.AddScoped<ICommandHandler<CustomRetryCommand>, CustomRetryHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var exception = new TestRetryException();
@@ -118,7 +118,7 @@ public class RunInTransactionWithRetryCommandTests {
     public async Task Should_NotRetryOnAnyException_Except_CustomExceptionSetInHandler() {
         // Arrange
         _services.AddScoped<ICommandHandler<CustomRetryCommand>, CustomRetryHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var exception = new Exception();
