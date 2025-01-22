@@ -10,5 +10,4 @@ public class Todo(string description, bool completed) {
     public string Description { get; set; } = description;
 
     public bool Completed { get; set; } = completed;
-    public ICollection<Tag> Tags { get; set; } = [];
 }
