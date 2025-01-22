@@ -1,7 +1,7 @@
 using Teniry.Cqrs.Commands;
 using Teniry.Cqrs.SampleApi.Domain;
 
-namespace Teniry.Cqrs.SampleApi.Application.CreateTodo;
+namespace Teniry.Cqrs.SampleApi.Application.Todos.CreateTodo;
 
 public class CreateTodoHandler : ICommandHandler<CreateTodoCommand, CreatedTodoDto> {
     private readonly TodoDb _db;

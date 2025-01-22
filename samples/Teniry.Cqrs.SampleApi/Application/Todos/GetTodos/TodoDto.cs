@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
+namespace Teniry.Cqrs.SampleApi.Application.Todos.GetTodos;
 
 public class TodoDto(string description, bool completed) {
     public string Description { get; set; } = description;

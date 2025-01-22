@@ -18,4 +18,9 @@
       <ProjectReference Include="..\..\src\Teniry.Cqrs\Teniry.Cqrs.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\EmailNotifications\" />
+      <Folder Include="Application\Todos\" />
+    </ItemGroup>
+
 </Project>
