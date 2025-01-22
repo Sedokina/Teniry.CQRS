@@ -1,6 +1,6 @@
 using Teniry.Cqrs.Commands;
 
-namespace Teniry.Cqrs.SampleApi.Application.Todos.CompleteTodo;
+namespace Teniry.Cqrs.SampleApi.Application.CompleteTodo;
 
 public class CompleteTodoHandler : ICommandHandler<CompleteTodoCommand> {
     private readonly TodoDb _db;

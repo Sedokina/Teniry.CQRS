@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Teniry.Cqrs.Extended.Queryables.Filter;
 using Teniry.Cqrs.Queries;
 
-namespace Teniry.Cqrs.SampleApi.Application.Todos.GetTodos;
+namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
 public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
     private readonly TodoDb _db;

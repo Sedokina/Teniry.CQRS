@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Teniry.Cqrs.SampleApi.Application.Todos.CreateTodo;
+namespace Teniry.Cqrs.SampleApi.Application.CreateTodo;
 
 public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand> {
     public CreateTodoCommandValidator() {

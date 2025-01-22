@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Teniry.Cqrs.Extended.Queryables.Filter;
 using Teniry.Cqrs.SampleApi.Domain;
 
-namespace Teniry.Cqrs.SampleApi.Application.Todos.GetTodos;
+namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
 // Filter is a feature of Teniry.Cqrs.Extended package
 public class TodosFilter : QueryableFilter<Todo> {

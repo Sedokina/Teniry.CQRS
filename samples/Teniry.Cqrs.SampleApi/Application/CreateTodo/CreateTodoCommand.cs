@@ -1,4 +1,4 @@
-namespace Teniry.Cqrs.SampleApi.Application.Todos.CreateTodo;
+namespace Teniry.Cqrs.SampleApi.Application.CreateTodo;
 
 public class CreateTodoCommand(string description) {
     public string Description { get; set; } = description;
