@@ -1,6 +1,8 @@
-@WebApplication1_HostAddress = http://localhost:5057
+@appAddress = http://localhost:5057
 
-GET {{WebApplication1_HostAddress}}/weatherforecast/
+GET {{appAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+// TODO: сделать эндпоинты

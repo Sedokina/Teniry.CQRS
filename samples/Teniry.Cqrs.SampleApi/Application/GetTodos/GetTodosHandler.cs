@@ -15,7 +15,8 @@ public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
     public async Task<List<TodoDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
         // Filter is a feature of Teniry.Cqrs.Extended package
         var filter = new TodosFilter {
-            Description = query.Description
+            Description = query.Description,
+            Sort = query.Sort
         };
 
         var result = await _db.Todos
