@@ -1,0 +1,29 @@
+@appAddress = http://localhost:5057
+
+### Create new todo
+POST {{appAddress}}/todo/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "New todo",
+  "description": "New todo description"
+}
+> {%  client.global.set("created_todo_location", response.headers.valueOf("Location")); %}
+
+
+### Get created todo
+GET {{appAddress}}/{{created_todo_location}}
+Accept: application/json
+
+### Complete todo
+PUT {{appAddress}}/{{created_todo_location}}/complete
+Accept: application/json
+
+### Get todos list
+GET {{appAddress}}/todo?sort=asc.completed&page=1&pageSize=10
+Accept: application/json
+
+### Get todos to compelete
+GET {{appAddress}}/todo/toComplete
+Accept: application/json

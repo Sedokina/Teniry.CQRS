@@ -43,6 +43,27 @@ public class RunInTransactionApplicationEventTests {
     }
 
     [Fact]
+    public async Task Should_RunEventHandler_When_EventCastedToIApplicationEvent() {
+        // Arrange
+        _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, FirstEventHandler>();
+        var dispatcher = new ApplicationEventDispatcher(_services.BuildServiceProvider(), _logger);
+
+        // Act
+        var act = async () =>
+            await dispatcher.DispatchAsync((IApplicationEvent)new TestDataUpdatedEvent(), new());
+
+        // Assert
+        await act.Should().NotThrowAsync();
+        _callValidator.Calls.Should()
+            .SatisfyRespectively(first => first.Should().Be("First call"));
+        _uow.Calls.Should()
+            .SatisfyRespectively(
+                first => first.Should().Be("Begin transaction"),
+                second => second.Should().Be("Commit transaction")
+            );
+    }
+
+    [Fact]
     public async Task Should_RunAllHandlers_Even_WhenOtherHandlerThrowsException() {
         // Arrange
         _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, SecondEventHandler>();

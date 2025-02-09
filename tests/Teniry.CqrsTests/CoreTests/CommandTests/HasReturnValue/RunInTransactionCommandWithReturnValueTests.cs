@@ -21,7 +21,7 @@ public class RunInTransactionCommandWithReturnValueTests {
     public async Task Should_ThrowException_When_TransactionalHasNoUnitOfWork() {
         // Arrange
         _services.AddScoped<ICommandHandler<NoUowUpdateTestDataCommand, string>, NoUowUpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var act = async () =>
@@ -35,7 +35,7 @@ public class RunInTransactionCommandWithReturnValueTests {
     public async Task Should_CallHandlerInTransaction() {
         // Arrange
         _services.AddScoped<ICommandHandler<UpdateTestDataCommand, string>, UpdateTestDataHandler>();
-        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider());
+        var dispatcher = new CommandDispatcher(_services.BuildServiceProvider(), new());
 
         // Act
         var result = await dispatcher

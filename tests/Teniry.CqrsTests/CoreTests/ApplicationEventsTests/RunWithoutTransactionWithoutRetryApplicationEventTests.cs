@@ -34,6 +34,22 @@ public class RunWithoutTransactionWithoutRetryApplicationEventTests {
     }
 
     [Fact]
+    public async Task Should_RunHandler_When_EventCasterToIApplicationEvent() {
+        // Arrange
+        _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, ValidEventHandler>();
+        var dispatcher = new ApplicationEventDispatcher(_services.BuildServiceProvider(), _logger);
+
+        // Act
+        var act = async () =>
+            await dispatcher.DispatchAsync((IApplicationEvent)new TestDataUpdatedEvent(), new());
+
+        // Assert
+        await act.Should().NotThrowAsync();
+        _callValidator.Calls.Should()
+            .SatisfyRespectively(first => first.Should().Be("Valid call"));
+    }
+
+    [Fact]
     public async Task Should_RunAllHandlers_Even_WhenOtherHandlerThrowsException() {
         // Arrange
         _services.AddScoped<IApplicationEventHandler<TestDataUpdatedEvent>, NotValidEventHandler>();
