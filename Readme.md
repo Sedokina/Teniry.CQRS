@@ -25,9 +25,7 @@ Install-Package Teniry.CQRS
 
 # Get started
 
-## Register services
-
-Add the following code to your `Program.cs` file:
+Add the following code to your `Program.cs` file, to register all necessary services for library to work
 
 ```csharp
 // Add cqrs support
@@ -49,7 +47,7 @@ public record CreateTodoCommand(string description) {
 }
 ```
 
-## Create command handler
+### Create command handler
 
 Create a new class that will be your command handler
 
@@ -65,7 +63,7 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand> {
 }
 ```
 
-## Dispatch command
+### Dispatch command
 
 Create method to handle http request and dispatch the command
 ```csharp
@@ -87,7 +85,7 @@ Map the endpoint to a route in the `Program.cs` file
 app.MapPost("todo/create", Endpoints.CreateTodoAsync);
 ```
 
-## Done
+### Done
 Command handler is implemented and ready to use.
 
 Start the application and send a POST request to `/todo/create` with a JSON body like this:
