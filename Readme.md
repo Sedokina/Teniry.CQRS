@@ -15,6 +15,9 @@ Provides implementation for:
 Teniry.CQRS can be used with any database access library, such as Entity Framework, Dapper, etc. But it is recommended
 to use it with Entity Framework Core, as it provides built-in transactional command handlers support.
 
+Teniry.CQRS command and query dispatchers are fully implemented using Dependency Injection,
+and do not use any libraries like MediatR.
+
 # Installation
 
 You can install the package via NuGet:
@@ -42,7 +45,7 @@ builder.Services.AddApplicationEvents();
 Create a new class, record or struct that will be your command
 
 ```csharp
-public record CreateTodoCommand(string description) {
+public class CreateTodoCommand(string description) {
     public string Description { get; set; } = description;
 }
 ```
@@ -66,6 +69,7 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand> {
 ### Dispatch command
 
 Create method to handle http request and dispatch the command
+
 ```csharp
 public static class Endpoints {
     public static async Task<IResult> CreateTodoAsync(
@@ -81,17 +85,72 @@ public static class Endpoints {
 ```
 
 Map the endpoint to a route in the `Program.cs` file
+
 ```csharp
 app.MapPost("todo/create", Endpoints.CreateTodoAsync);
 ```
 
 ### Done
+
 Command handler is implemented and ready to use.
 
 Start the application and send a POST request to `/todo/create` with a JSON body like this:
 
 ```json
 {
-    "description": "Buy milk"
+  "description": "Buy milk"
 }
 ```
+
+## Create query
+
+Create a new class, record or struct that will be your query
+
+```csharp
+public class GetTodosQuery { }
+```
+
+### Create query handler
+
+Create a new class that will be your query handler
+
+```csharp
+public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
+    /// <inheritdoc />
+    public Task<List<TodoDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
+        // Implement the query handler here, select data from db
+        
+        // Example data
+        var result = new List<TodoDto>() { new TodoDto(1, "Buy milk") };
+        return result;
+    }
+}
+```
+
+### Dispatch query
+
+Create method to handle http request and dispatch the query
+
+```csharp
+    public static async Task<IResult> GetTodosAsync(
+        IQueryDispatcher queryDispatcher,
+        CancellationToken cancellationToken
+    ) {
+        var result = await queryDispatcher
+            .DispatchAsync<GetTodosQuery, List<TodoDto>>(new GetTodosQuery(), cancellationToken);
+
+        return TypedResults.Ok(result);
+    }
+```
+
+Map the endpoint to a route in the `Program.cs` file
+
+```csharp
+app.MapGet("todo", Endpoints.GetTodosAsync);
+```
+
+### Done
+
+Query handler is implemented and ready to use.
+
+Start the application and send a GET request to `/todo` to get the list of todos.
