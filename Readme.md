@@ -16,32 +16,35 @@ Simple and lightweight CQRS implementation for .NET
 - Transactional command handlers
 - Includes FluentValidation support for commands
 - Extended with types to simplify queries and commands implementation
-- Built using only .NET Dependency Injection
+- Built using only .NET Dependency Injection*
+- Use any database**
 - Production ready
 
-Teniry.CQRS can be used with any database access library, such as Entity Framework, Dapper, etc. But it is recommended
-to use it with Entity Framework Core, as it provides built-in transactional command handlers support.
-
-Teniry.CQRS' command and query dispatchers are fully implemented using Dependency Injection,
+(*) Teniry.CQRS' command and query dispatchers are fully implemented using Dependency Injection,
 and do not use any libraries like MediatR.
 
+(**) Teniry.CQRS can be used with any database access library, such as Entity Framework, Dapper, etc. But it is
+recommended to use it with Entity Framework Core, as it provides built-in transactional command handlers support.
+
 # 🔭 Overview
+
 * [Installation](#-installation)
 * [Get started](#-get-started)
-  * [Create command](#create-command)
-  * [Create query](#create-query)
+    * [Create command](#create-command)
+    * [Create query](#create-query)
+* [Examples](#examples)
 * Docs
-  * Queries
-    * Dispatching queries
-  * Commands
-    * Command without return value
-    * Command with return value
-    * Dispatching commands
-    * Command validation
-    * Transactional command handlers
-  * Events
-    * Dispatching events from commands
-    * Handling events
+    * Queries
+        * Dispatching queries
+    * Commands
+        * Command without return value
+        * Command with return value
+        * Dispatching commands
+        * Command validation
+        * Transactional command handlers
+    * Events
+        * Dispatching events from commands
+        * Handling events
 
 # 📦 Installation
 
@@ -184,3 +187,15 @@ app.MapGet("todo", Endpoints.GetTodosAsync);
 Query handler is implemented and ready to use.
 
 Start the application and send a GET request to `/todo` to get the list of todos.
+
+# Production ready?
+
+Yes! Teniry.CQRS is production ready. It is used in production in multiple projects for a long time now.
+
+# Examples
+
+Check out the [Web API project](samples/Teniry.Cqrs.SampleApi) example on using Teniry.CQRS library
+
+## Contributing
+
+Feel free to share your ideas through Pull Requests or GitHub Issues. Any contribution or feedback is appreciated!
