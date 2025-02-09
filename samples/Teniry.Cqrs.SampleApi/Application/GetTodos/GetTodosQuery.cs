@@ -3,9 +3,9 @@ using Teniry.Cqrs.Extended.Queryables.Sort;
 
 namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
-/// <remark>
+/// <summary>
 ///     <see cref="IPage"/> and <see cref="IDefineSortable"/> is a feature of Teniry.Cqrs.Extended package
-/// </remark>
+/// </summary>
 public class GetTodosQuery : IPage, IDefineSortable {
     public string? Description { get; set; }
 

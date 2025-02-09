@@ -23,3 +23,7 @@ Accept: application/json
 ### Get todos list
 GET {{appAddress}}/todo?sort=asc.completed&page=1&pageSize=10
 Accept: application/json
+
+### Get todos to compelete
+GET {{appAddress}}/todo/toComplete
+Accept: application/json

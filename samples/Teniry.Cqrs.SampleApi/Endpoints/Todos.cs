@@ -6,6 +6,7 @@ using Teniry.Cqrs.SampleApi.Application.CompleteTodo;
 using Teniry.Cqrs.SampleApi.Application.CreateTodo;
 using Teniry.Cqrs.SampleApi.Application.GetTodo;
 using Teniry.Cqrs.SampleApi.Application.GetTodos;
+using Teniry.Cqrs.SampleApi.Application.GetTodosToComplete;
 
 namespace Teniry.Cqrs.SampleApi.Endpoints;
 
@@ -30,14 +31,29 @@ public static class Todos {
     ///     Get all todos list
     /// </summary>
     /// <response code="200">Returns todos list</response>
-    [ProducesResponseType(typeof(List<TodoListItemDto>), 200)]
+    [ProducesResponseType(typeof(PagedResult<TodoListItemDto>), 200)]
     public static async Task<IResult> GetTodosAsync(
         [AsParameters] GetTodosQuery query,
         IQueryDispatcher queryDispatcher,
         CancellationToken cancellationToken
     ) {
-        var result =
-            await queryDispatcher.DispatchAsync<GetTodosQuery, PagedResult<TodoListItemDto>>(query, cancellationToken);
+        var result = await queryDispatcher
+            .DispatchAsync<GetTodosQuery, PagedResult<TodoListItemDto>>(query, cancellationToken);
+
+        return TypedResults.Ok(result);
+    }
+
+    /// <summary>
+    ///     Get todos to complete
+    /// </summary>
+    /// <response code="200">Returns only not completed todos</response>
+    [ProducesResponseType(typeof(List<TodoToCompleteDto>), 200)]
+    public static async Task<IResult> GetTodosToCompleteAsync(
+        IQueryDispatcher queryDispatcher,
+        CancellationToken cancellationToken
+    ) {
+        var result = await queryDispatcher
+            .DispatchAsync<GetTodosToCompleteQuery, List<TodoToCompleteDto>>(new(), cancellationToken);
 
         return TypedResults.Ok(result);
     }

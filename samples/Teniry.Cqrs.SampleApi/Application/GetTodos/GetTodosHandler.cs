@@ -1,9 +1,14 @@
 using Teniry.Cqrs.Extended.Queryables.Filter;
 using Teniry.Cqrs.Extended.Queryables.Page;
 using Teniry.Cqrs.Queries;
+using Teniry.Cqrs.SampleApi.Application.GetTodosToComplete;
 
 namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
+/// <summary>
+///     This is an example of complex list query handler with paging, filtering and sorting
+///     for simple list query handler see <see cref="GetTodosToCompleteHandler"/>
+/// </summary>
 /// <remark>
 ///     PagedResult is a class of Teniry.Cqrs.Extended package
 /// </remark>
