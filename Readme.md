@@ -2,7 +2,7 @@
 
 Allows you to develop your application faster by providing simple and lightweight CQRS implementation for .NET projects
 
-Provides implementation for:
+# ✨ Features:
 
 - Command and query segregation
 - Automatic command and query handlers registration
@@ -10,15 +10,16 @@ Provides implementation for:
 - Event dispatching and handling
 - Transactional command handlers
 - Includes FluentValidation support for commands
-- Types to simplify queries and commands implementation
+- Extended with types to simplify queries and commands implementation
+- Built using only .NET Dependency Injection
 
 Teniry.CQRS can be used with any database access library, such as Entity Framework, Dapper, etc. But it is recommended
 to use it with Entity Framework Core, as it provides built-in transactional command handlers support.
 
-Teniry.CQRS command and query dispatchers are fully implemented using Dependency Injection ✅,
-and do not use any libraries like MediatR ❌.
+Teniry.CQRS' command and query dispatchers are fully implemented using Dependency Injection,
+and do not use any libraries like MediatR.
 
-# Installation
+# 📦 Installation
 
 You can install the package via NuGet:
 
@@ -26,7 +27,7 @@ You can install the package via NuGet:
 Install-Package Teniry.CQRS
 ```
 
-# Get started
+# 🔨 Get started
 
 * Register CQRS services
 * Implement command or query
