@@ -35,7 +35,8 @@ if (app.Environment.IsDevelopment()) {
 app.UseHttpsRedirection();
 
 app.MapGet("todo", Todos.GetTodosAsync);
+app.MapGet("todo/{id:guid}", Todos.GetTodoAsync);
 app.MapPost("todo/create", Todos.CreateTodoAsync);
-app.MapPut("todo/{id:int}", Todos.CompleteTodoAsync);
+app.MapPut("todo/{id:guid}", Todos.CompleteTodoAsync);
 
 app.Run();

@@ -4,7 +4,7 @@ using Teniry.Cqrs.Queries;
 
 namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
-public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
+public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoListItemDto>> {
     private readonly TodoDb _db;
 
     public GetTodosHandler(TodoDb db) {
@@ -12,7 +12,7 @@ public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
     }
 
     /// <inheritdoc />
-    public async Task<List<TodoDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
+    public async Task<List<TodoListItemDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
         // Filter is a feature of Teniry.Cqrs.Extended package
         var filter = new TodosFilter {
             Description = query.Description,
@@ -21,7 +21,7 @@ public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoDto>> {
 
         var result = await _db.Todos
             .Filter(filter)
-            .Select(x => new TodoDto(x.Description, x.Completed))
+            .Select(x => new TodoListItemDto(x.Description, x.Completed))
             .ToListAsync(cancellation);
 
         return result;

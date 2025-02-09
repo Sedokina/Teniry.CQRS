@@ -3,22 +3,40 @@ using Teniry.Cqrs.Commands;
 using Teniry.Cqrs.Queries;
 using Teniry.Cqrs.SampleApi.Application.CompleteTodo;
 using Teniry.Cqrs.SampleApi.Application.CreateTodo;
+using Teniry.Cqrs.SampleApi.Application.GetTodo;
 using Teniry.Cqrs.SampleApi.Application.GetTodos;
 
 namespace Teniry.Cqrs.SampleApi.Endpoints;
 
 public static class Todos {
     /// <summary>
+    ///     Get todo by id
+    /// </summary>
+    /// <response code="200">Returns todo</response>
+    [ProducesResponseType(typeof(TodoDto), 200)]
+    public static async Task<IResult> GetTodoAsync(
+        Guid id,
+        IQueryDispatcher queryDispatcher,
+        CancellationToken cancellationToken
+    ) {
+        var result =
+            await queryDispatcher.DispatchAsync<GetTodoQuery, TodoDto>(new(id), cancellationToken);
+
+        return TypedResults.Ok(result);
+    }
+
+    /// <summary>
     ///     Get all todos list
     /// </summary>
     /// <response code="200">Returns todos list</response>
-    [ProducesResponseType(typeof(List<TodoDto>), 200)]
+    [ProducesResponseType(typeof(List<TodoListItemDto>), 200)]
     public static async Task<IResult> GetTodosAsync(
         [AsParameters] GetTodosQuery query,
         IQueryDispatcher queryDispatcher,
         CancellationToken cancellationToken
     ) {
-        var result = await queryDispatcher.DispatchAsync<GetTodosQuery, List<TodoDto>>(query, cancellationToken);
+        var result =
+            await queryDispatcher.DispatchAsync<GetTodosQuery, List<TodoListItemDto>>(query, cancellationToken);
 
         return TypedResults.Ok(result);
     }
@@ -36,14 +54,14 @@ public static class Todos {
         var result = await commandDispatcher
             .DispatchAsync<CreateTodoCommand, CreatedTodoDto>(command, cancellationToken);
 
-        return TypedResults.Created();
+        return TypedResults.Created($"todo/{result.Id}");
     }
 
     /// <summary>
     ///     Complete todo
     /// </summary>
     /// <response code="204">Todo completed and closed</response>
-    [ProducesResponseType(201)]
+    [ProducesResponseType(204)]
     public static async Task<IResult> CompleteTodoAsync(
         Guid id,
         ICommandDispatcher commandDispatcher,
