@@ -1,6 +1,11 @@
-# Teniry.CQRS
+<div align="center">
+<h1>Teniry.CQRS</h1>
+Simple and lightweight CQRS implementation for .NET
 
-Allows you to develop your application faster by providing simple and lightweight CQRS implementation for .NET projects
+[Report Bug][github-issues-url] · [Request Feature][github-issues-url]
+
+[github-issues-url]:https://github.com/Sedokina/Teniry.CQRS/issues
+</div>
 
 # ✨ Features:
 
@@ -12,12 +17,31 @@ Allows you to develop your application faster by providing simple and lightweigh
 - Includes FluentValidation support for commands
 - Extended with types to simplify queries and commands implementation
 - Built using only .NET Dependency Injection
+- Production ready
 
 Teniry.CQRS can be used with any database access library, such as Entity Framework, Dapper, etc. But it is recommended
 to use it with Entity Framework Core, as it provides built-in transactional command handlers support.
 
 Teniry.CQRS' command and query dispatchers are fully implemented using Dependency Injection,
 and do not use any libraries like MediatR.
+
+# 🔭 Overview
+* [Installation](#-installation)
+* [Get started](#-get-started)
+  * [Create command](#create-command)
+  * [Create query](#create-query)
+* Docs
+  * Queries
+    * Dispatching queries
+  * Commands
+    * Command without return value
+    * Command with return value
+    * Dispatching commands
+    * Command validation
+    * Transactional command handlers
+  * Events
+    * Dispatching events from commands
+    * Handling events
 
 # 📦 Installation
 
@@ -160,4 +184,3 @@ app.MapGet("todo", Endpoints.GetTodosAsync);
 Query handler is implemented and ready to use.
 
 Start the application and send a GET request to `/todo` to get the list of todos.
-
