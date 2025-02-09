@@ -5,7 +5,9 @@ using Teniry.Cqrs.SampleApi.Domain;
 
 namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
-// Filter is a feature of Teniry.Cqrs.Extended package
+/// <remark>
+///     <see cref="QueryableFilter{TEntity}"/> is a feature of Teniry.Cqrs.Extended package
+/// </remark>
 public class TodosFilter : QueryableFilter<Todo> {
     public string? Description { get; set; }
 

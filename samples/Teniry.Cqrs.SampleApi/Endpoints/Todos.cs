@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Teniry.Cqrs.Commands;
+using Teniry.Cqrs.Extended.Queryables.Page;
 using Teniry.Cqrs.Queries;
 using Teniry.Cqrs.SampleApi.Application.CompleteTodo;
 using Teniry.Cqrs.SampleApi.Application.CreateTodo;
@@ -36,7 +37,7 @@ public static class Todos {
         CancellationToken cancellationToken
     ) {
         var result =
-            await queryDispatcher.DispatchAsync<GetTodosQuery, List<TodoListItemDto>>(query, cancellationToken);
+            await queryDispatcher.DispatchAsync<GetTodosQuery, PagedResult<TodoListItemDto>>(query, cancellationToken);
 
         return TypedResults.Ok(result);
     }

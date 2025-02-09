@@ -1,10 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using Teniry.Cqrs.Extended.Queryables.Filter;
+using Teniry.Cqrs.Extended.Queryables.Page;
 using Teniry.Cqrs.Queries;
 
 namespace Teniry.Cqrs.SampleApi.Application.GetTodos;
 
-public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoListItemDto>> {
+/// <remark>
+///     PagedResult is a class of Teniry.Cqrs.Extended package
+/// </remark>
+public class GetTodosHandler : IQueryHandler<GetTodosQuery, PagedResult<TodoListItemDto>> {
     private readonly TodoDb _db;
 
     public GetTodosHandler(TodoDb db) {
@@ -12,8 +15,11 @@ public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoListItemDto
     }
 
     /// <inheritdoc />
-    public async Task<List<TodoListItemDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
-        // Filter is a feature of Teniry.Cqrs.Extended package
+    /// <remark>
+    ///     .Filter(...) is a Linq extension of Teniry.Cqrs.Extended package
+    ///     .ToPagedListAsync(...) is a Linq extension of Teniry.Cqrs.Extended package
+    /// </remark>
+    public async Task<PagedResult<TodoListItemDto>> HandleAsync(GetTodosQuery query, CancellationToken cancellation) {
         var filter = new TodosFilter {
             Description = query.Description,
             Sort = query.Sort
@@ -22,8 +28,8 @@ public class GetTodosHandler : IQueryHandler<GetTodosQuery, List<TodoListItemDto
         var result = await _db.Todos
             .Filter(filter)
             .Select(x => new TodoListItemDto(x.Description, x.Completed))
-            .ToListAsync(cancellation);
+            .ToPagedListAsync(query, cancellation);
 
-        return result;
+        return new(result.ToList(), result.GetPage());
     }
 }
