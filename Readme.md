@@ -34,8 +34,11 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
     * [Create query](#create-query)
 * [Examples](#examples)
 * Docs
-    * Queries
-        * Dispatching queries
+    * [Queries](docs/queries.md)
+        * [Handling queries](docs/queries.md#query-handler)
+        * [Dispatching queries](docs/queries.md#query-dispatcher)
+        * [Example](docs/queries.md#example)
+        * [Extended queries functions](docs/queries-extended.md)
     * Commands
         * Command without return value
         * Command with return value
