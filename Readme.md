@@ -29,7 +29,7 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
 # 🔭 Overview
 
 * [Installation](#-installation)
-* [Get started](#-get-started)
+* [Get started](#-quick-start)
     * [Create command](#create-command)
     * [Create query](#create-query)
 * [Examples](#examples)
@@ -54,7 +54,7 @@ You can install the package via NuGet:
 Install-Package Teniry.CQRS
 ```
 
-# 🔨 Get started
+# 🔨 Quick start
 
 * Register CQRS services
 * Implement command or query
