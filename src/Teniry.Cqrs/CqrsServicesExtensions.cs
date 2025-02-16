@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Teniry.Cqrs.ApplicationEvents;
 using Teniry.Cqrs.Commands;
 using Teniry.Cqrs.Queries;
 
@@ -11,6 +12,7 @@ public static class CqrsServicesExtensions {
         this IServiceCollection services
     ) {
         AddCqrs(services, Assembly.GetCallingAssembly());
+        services.AddApplicationEvents();
     }
 
     public static void AddCqrs(

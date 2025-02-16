@@ -22,7 +22,6 @@ builder.Services.AddSwaggerGen(
 );
 
 builder.Services.AddCqrs();
-builder.Services.AddApplicationEvents();
 
 var app = builder.Build();
 

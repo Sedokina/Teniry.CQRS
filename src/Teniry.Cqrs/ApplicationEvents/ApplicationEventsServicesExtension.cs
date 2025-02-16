@@ -5,7 +5,7 @@ using Teniry.Cqrs.ApplicationEvents.EventsChannelHandler;
 
 namespace Teniry.Cqrs.ApplicationEvents;
 
-public static class ApplicationEventsServicesExtension {
+internal static class ApplicationEventsServicesExtension {
     public static void AddApplicationEvents(
         this IServiceCollection services
     ) {
