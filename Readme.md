@@ -39,10 +39,10 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
         * [Dispatching queries](docs/queries.md#query-dispatcher)
         * [Example](docs/queries.md#example)
         * [Extended queries functions](docs/queries-extended.md)
-    * Commands
-        * Command without return value
-        * Command with return value
-        * Dispatching commands
+    * [Commands](docs/commands.md)
+        * [Command without return value](docs/commands.md#command-handler-without-return-value)
+        * [Command with return value](docs/commands.md#command-handler-with-return-value)
+        * [Dispatching commands](docs/commands.md#command-dispatcher)
         * Command validation
         * Transactional command handlers
     * Events

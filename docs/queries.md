@@ -23,7 +23,7 @@ The `IQueryHandler<TQuery, TResult>` interface is used to find query handlers th
 Query dispatcher is a class that is used to 'connect' query to it's handler. It's internal implementation is responsible
 for finding the handler that can handle the query and calling it's `HandleAsync` method.
 
-To use query dispatcher you have to inject interface `IQueryDispatcher` it into the class or method that heeds to call
+To use query dispatcher you have to inject interface `IQueryDispatcher` into a class or method that heeds to call
 the query handler.
 
 Query dispatcher has only one method
@@ -41,8 +41,7 @@ public class GetTodosQuery { }
 
 Any query can have properties to pass data to the query handler.
 For example, our `GetTodosQuery` can contain a property to filter todos by description, can have pagination, sorting and
-other
-properties.
+other properties.
 
 For example:
 We have a description property in the query which we will use to filter todos by description.
@@ -110,4 +109,16 @@ Which then can be mapped to the endpoint in the `Program.cs` file.
 
 ```csharp
 app.MapGet("todo", Todos.GetTodosAsync);
+```
+
+# Done
+Now you have a query handler that can be used to select data from the database. Start the application and send a GET request
+to 
+```
+/todo
+```
+
+to get the list of todos. You can also filter todos by description by sending a `description` query parameter like this 
+```
+/todo?description=milk
 ```
