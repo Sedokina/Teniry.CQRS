@@ -49,6 +49,21 @@ Depending on the return type of the command handler, command dispatcher has two 
 `Task<TCommandResult> DispatchAsync<TCommand, TCommandResult>(TCommand command, CancellationToken cancellationToken)` -
 for command handlers with return value.
 
+# Command validation
+
+Every user input should be validated. Command validation is a way to validate the command before it is passed to the
+command handler.
+
+To validate the command you can create a class that implements abstract class `AbstractValidator<TCommand>` this class
+provided by the FluentValidation library and integrates with the Teniry.CQRS library.
+
+Command dispatcher is automatically calls the validator before calling the command handler. You don't need to register
+the validator in the DI container, because it is done automatically.
+
+If the command is not valid, the command dispatcher throws `ValidationException` with the list of errors.
+
+More on FluentValidation library can be found [here](https://docs.fluentvalidation.net/en/latest/).
+
 # Example
 
 ## Create command
@@ -124,6 +139,19 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand> {
 
 The main difference is that the method `HandleAsync` does not return any value, and `ICommandHandler` interface has only
 one generic parameter.
+
+# Create validator
+
+To validate the command you have to create a validator class that implements abstract class `AbstractValidator<TCommand>`
+For example, the validator for the `CreateTodoCommand` could look like this:
+
+```csharp
+public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand> {
+    public CreateTodoCommandValidator() {
+        RuleFor(x => x.Description).NotEmpty().MaximumLength(100);
+    }
+}
+```
 
 # Dispatch command
 

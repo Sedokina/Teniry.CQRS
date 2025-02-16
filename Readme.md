@@ -29,7 +29,7 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
 # 🔭 Overview
 
 * [Installation](#-installation)
-* [Get started](#-quick-start)
+* [Quick start](#-quick-start)
     * [Create command](#create-command)
     * [Create query](#create-query)
 * [Examples](#examples)
@@ -43,7 +43,7 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
         * [Command without return value](docs/commands.md#command-handler-without-return-value)
         * [Command with return value](docs/commands.md#command-handler-with-return-value)
         * [Dispatching commands](docs/commands.md#command-dispatcher)
-        * Command validation
+        * [Command validation](docs/commands.md#command-validation)
         * Transactional command handlers
     * Events
         * Dispatching events from commands
