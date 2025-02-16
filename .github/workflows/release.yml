@@ -1,3 +1,5 @@
+name: release
+
 on:
   push:
     tags:
@@ -23,5 +25,7 @@ jobs:
         run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
       - name: Push
         run: dotnet nuget push Teniry.Cqrs.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
+      - name: Push
+        run: dotnet nuget push Teniry.Cqrs.Extended.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
