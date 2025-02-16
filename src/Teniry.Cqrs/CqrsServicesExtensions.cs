@@ -12,7 +12,6 @@ public static class CqrsServicesExtensions {
         this IServiceCollection services
     ) {
         AddCqrs(services, Assembly.GetCallingAssembly());
-        services.AddApplicationEvents();
     }
 
     public static void AddCqrs(
@@ -48,5 +47,7 @@ public static class CqrsServicesExtensions {
                     .WithScopedLifetime();
             }
         );
+        
+        services.AddApplicationEvents(assemblies);
     }
 }

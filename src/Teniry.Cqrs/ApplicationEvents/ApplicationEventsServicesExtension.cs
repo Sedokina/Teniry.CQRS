@@ -6,13 +6,7 @@ using Teniry.Cqrs.ApplicationEvents.EventsChannelHandler;
 namespace Teniry.Cqrs.ApplicationEvents;
 
 internal static class ApplicationEventsServicesExtension {
-    public static void AddApplicationEvents(
-        this IServiceCollection services
-    ) {
-        AddApplicationEvents(services, Assembly.GetCallingAssembly());
-    }
-
-    public static void AddApplicationEvents(
+    internal static void AddApplicationEvents(
         this IServiceCollection services,
         params Assembly[] assemblies
     ) {
