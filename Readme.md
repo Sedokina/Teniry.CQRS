@@ -33,6 +33,10 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
     * [Create command](#create-command)
     * [Create query](#create-query)
 * [Examples](#examples)
+* [FAQ](#faq)
+    * [Who is this library for and would it fit for my project?](#who-is-this-library-for-and-would-it-fit-for-my-project)
+    * [Do I really need a library for CQRS?](#do-i-really-need-a-library-for-cqrs)
+    * [Is it production ready?](#is-it-production-ready)
 * Docs
     * [Register CQRS and event services](docs/register-cqrs.md)
     * [Queries](docs/queries.md)
@@ -192,7 +196,30 @@ Query handler is implemented and ready to use.
 
 Start the application and send a GET request to `/todo` to get the list of todos.
 
-# Production ready?
+# FAQ
+
+## Who is this library for and would it fit for my project?
+
+I created this library to get advantages of the CQRS pattern while keeping it simple stupid in terms of CQRS
+implementation within .NET
+
+My main goal was to provide basic and reliable set of classes and method to quickstart application development.
+The library is well suited for building a simple CRUD application, a monolith, modular monolith or microservices
+architecture. It does not impose any restrictions on how many assemblies you could have, or how you can structure them.
+
+## Do I really need a library for CQRS?
+
+You probably think CQRS is quite small pattern why do I need a whole library for that? You most likely
+right and don't need the library.
+
+The library is a set of classes and methods that implements all you need from CQRS. And it does not provide incredible
+functions you can't even imagine. You probably can write everything provided by the library by yourself in a
+relatively short amount of time and skip some features you don't even need.
+
+But why spend a time to build a new tool when you can use already existing, reliable and production ready library, and
+build an app you really need in that time instead?
+
+## Is it production ready?
 
 Yes! Teniry.CQRS is production ready. It is used in production in multiple projects for a long time now.
 
@@ -200,6 +227,15 @@ Yes! Teniry.CQRS is production ready. It is used in production in multiple proje
 
 Check out the [Web API project](samples/Teniry.Cqrs.SampleApi) example on using Teniry.CQRS library
 
-## Contributing
+# Special mention
+
+This library was inspired by [Cezary Piątek's](https://github.com/cezarypiatek)
+article ["Why I don't use MediatR for CQRS"](https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/).
+
+Initially some of the classes included in the library was built just to give a test for his approach.
+I applied this approach for several projects, ran it in production, added new features and tested all several times,
+only after it all grew into this library.
+
+# Contributing
 
 Feel free to share your ideas through Pull Requests or GitHub Issues. Any contribution or feedback is appreciated!
