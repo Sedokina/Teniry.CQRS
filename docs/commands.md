@@ -64,6 +64,22 @@ If the command is not valid, the command dispatcher throws `ValidationException`
 
 More on FluentValidation library can be found [here](https://docs.fluentvalidation.net/en/latest/).
 
+# Transactional command handler
+
+Command handlers can require a transaction to be able to save multiple records to the database.
+To make the command handler transactional, you can apply the `ITransactionalHandler` interface to the command handler.
+
+`ITransactionalHandler` interface is a marker interface that tells the command dispatcher that the command handler
+requires a transaction to be able to save data to the database.
+
+Command dispatcher automatically starts a transaction before calling the command handler and commits it after the
+handler has finished.
+
+That way, you don't need to call `BeginTransactionAsync` or `CommitTransactionAsync` methods in the command handler.
+
+> [!WARNING]
+> Currently only RepeatableRead isolation level is supported
+
 # Example
 
 ## Create command
@@ -140,9 +156,39 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand> {
 The main difference is that the method `HandleAsync` does not return any value, and `ICommandHandler` interface has only
 one generic parameter.
 
-# Create validator
+## Create transactional handler
 
-To validate the command you have to create a validator class that implements abstract class `AbstractValidator<TCommand>`
+If you need to make CreateTodoHandler transactional, you can apply the `ITransactionalHandler` interface to the command.
+It can be modified like this:
+
+```csharp
+public class CreateTodoHandler : ICommandHandler<CreateTodoCommand, CreatedTodoDto>, ITransactionalHandler {
+    private readonly TodoDb _db;
+
+    public CreateTodoHandler(TodoDb db) {
+        _db = db;
+    }
+
+    /// <inheritdoc />
+    public async Task<CreatedTodoDto> HandleAsync(CreateTodoCommand command, CancellationToken cancellation) {
+        var todo = new Todo(command.Description, false);
+        await _db.Todos.AddAsync(todo, cancellation);
+        await _db.SaveChangesAsync(cancellation);
+        
+        // Then save some other data to the database, for example logs
+        var log = new Log("Todo created with id: " + todo.Id);
+        await _db.Logs.AddAsync(log, cancellation);
+        await _db.SaveChangesAsync(cancellation);
+        
+        return new(todo.Id);
+    }
+}
+```
+
+## Create validator
+
+To validate the command you have to create a validator class that implements abstract class
+`AbstractValidator<TCommand>`
 For example, the validator for the `CreateTodoCommand` could look like this:
 
 ```csharp
@@ -153,7 +199,7 @@ public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand> {
 }
 ```
 
-# Dispatch command
+## Dispatch command
 
 When we use MinimalAPI we can create a method to handle the http request and dispatch the command. Otherwise, we need a
 controller.
@@ -202,7 +248,7 @@ Map the endpoint to a route in the `Program.cs` file and you are ready to go.
 app.MapPost("todo/create", Endpoints.CreateTodoAsync);
 ```
 
-# Done
+## Done
 
 Now you have a command handler that can be used to create new todos and save it to the database. Start the application
 and send a POST request to

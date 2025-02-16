@@ -44,7 +44,7 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
         * [Command with return value](docs/commands.md#command-handler-with-return-value)
         * [Dispatching commands](docs/commands.md#command-dispatcher)
         * [Command validation](docs/commands.md#command-validation)
-        * Transactional command handlers
+        * [Transactional command handlers](docs/commands.md#transactional-command-handler)
     * Events
         * Dispatching events from commands
         * Handling events
