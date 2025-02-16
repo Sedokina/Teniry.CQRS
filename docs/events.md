@@ -16,6 +16,11 @@ event. The `HandleAsync` method can not have a return value.
 Generally event handler depends on services like SMTP. To inject them into the command handler use constructor
 injection.
 
+### Why does event handler have to implement `IApplicationEventHandler<TApplicationEvent>` interface?
+
+The `IApplicationEventHandler` interface is used to find event handlers that has to be registered in the DI,
+see [Register event services](register-cqrs.md#register-event-services) for details.
+
 # Trigger event
 
 Every command handler can trigger events. For command handler to be able to trigger events it has to implement

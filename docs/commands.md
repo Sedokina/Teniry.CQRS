@@ -28,8 +28,8 @@ execution.
 
 `ICommandHandler<TCommand, TResult>` interface?
 
-The `ICommandHandler` interface is used to find command handlers that has to be registered in the DI.
-// TODO: add link to explanation of AddCQRS method
+The `ICommandHandler` interface is used to find command handlers that has to be registered in the DI,
+see [Register CQRS services](register-cqrs.md) for details.
 
 # Command Dispatcher
 

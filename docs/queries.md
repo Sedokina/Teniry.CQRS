@@ -15,8 +15,8 @@ handler use constructor injection.
 
 ### Why does query handler have to implement `IQueryHandler<TQuery, TResult>` interface?
 
-The `IQueryHandler<TQuery, TResult>` interface is used to find query handlers that has to be registered in the DI.
-// TODO: add link to explanation of AddCQRS method
+The `IQueryHandler<TQuery, TResult>` interface is used to find query handlers that has to be registered in the DI,
+see [Register CQRS services](register-cqrs.md) for details.
 
 ## Query dispatcher
 
@@ -31,6 +31,7 @@ Query dispatcher has only one method
 Where `TQuery` is the query type and `TResult` is the result type that handler should return.
 
 # Example
+
 ### Create query
 
 For example, if we have todo list application, we can create a query to get all todos.
@@ -112,13 +113,17 @@ app.MapGet("todo", Todos.GetTodosAsync);
 ```
 
 # Done
-Now you have a query handler that can be used to select data from the database. Start the application and send a GET request
-to 
+
+Now you have a query handler that can be used to select data from the database. Start the application and send a GET
+request
+to
+
 ```
 /todo
 ```
 
-to get the list of todos. You can also filter todos by description by sending a `description` query parameter like this 
+to get the list of todos. You can also filter todos by description by sending a `description` query parameter like this
+
 ```
 /todo?description=milk
 ```

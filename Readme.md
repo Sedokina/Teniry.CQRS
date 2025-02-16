@@ -34,6 +34,7 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
     * [Create query](#create-query)
 * [Examples](#examples)
 * Docs
+    * [Register CQRS and event services](docs/register-cqrs.md)
     * [Queries](docs/queries.md)
         * [Handling queries](docs/queries.md#query-handler)
         * [Dispatching queries](docs/queries.md#query-dispatcher)
