@@ -82,7 +82,7 @@ That way, you don't need to call `BeginTransactionAsync` or `CommitTransactionAs
 
 # Example
 
-## Create command
+### Create command
 
 For example if we have todo list application, we can create a command to create a new todo.
 
@@ -100,7 +100,7 @@ For example, our `CreateTodoCommand` can contain a property to set the descripti
 > [!NOTE]  
 > Command does not have to implement any interface or inherit any class to be able to call it's handler.
 
-## Create command handler
+### Create command handler
 
 If we have a command to create a new todo, we have to create a command handler to save the todo to the database.
 
@@ -156,7 +156,7 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand> {
 The main difference is that the method `HandleAsync` does not return any value, and `ICommandHandler` interface has only
 one generic parameter.
 
-## Create transactional handler
+### Create transactional handler
 
 If you need to make CreateTodoHandler transactional, you can apply the `ITransactionalHandler` interface to the command.
 It can be modified like this:
@@ -185,7 +185,7 @@ public class CreateTodoHandler : ICommandHandler<CreateTodoCommand, CreatedTodoD
 }
 ```
 
-## Create validator
+### Create validator
 
 To validate the command you have to create a validator class that implements abstract class
 `AbstractValidator<TCommand>`
@@ -199,7 +199,7 @@ public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand> {
 }
 ```
 
-## Dispatch command
+### Dispatch command
 
 When we use MinimalAPI we can create a method to handle the http request and dispatch the command. Otherwise, we need a
 controller.
@@ -248,7 +248,7 @@ Map the endpoint to a route in the `Program.cs` file and you are ready to go.
 app.MapPost("todo/create", Endpoints.CreateTodoAsync);
 ```
 
-## Done
+### Done
 
 Now you have a command handler that can be used to create new todos and save it to the database. Start the application
 and send a POST request to

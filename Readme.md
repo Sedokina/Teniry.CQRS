@@ -45,9 +45,9 @@ recommended to use it with Entity Framework Core, as it provides built-in transa
         * [Dispatching commands](docs/commands.md#command-dispatcher)
         * [Command validation](docs/commands.md#command-validation)
         * [Transactional command handlers](docs/commands.md#transactional-command-handler)
-    * Events
-        * Dispatching events from commands
-        * Handling events
+    * [Events](docs/events.md)
+        * [Event handling](docs/events.md#event-handler)
+        * [Trigger events](docs/events.md#trigger-event)
 
 # 📦 Installation
 
