@@ -76,9 +76,6 @@ Add the following code to your `Program.cs` file, to register all necessary serv
 // Registers all necessary services including command and query dispatchers
 // Automatically registers all command and query handlers in the assembly
 builder.Services.AddCqrs();
-
-// Add cqrs events support
-builder.Services.AddApplicationEvents();
 ```
 
 # Create command
